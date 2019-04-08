@@ -10,12 +10,6 @@ import { Profile } from './pages/profile';
 import { Header } from './components/header/header';
 import {SearchBar } from './components/searchBar/searchBar';
 
-const headerStyle: React.CSSProperties = {
-    backgroundColor: "green",
-    height: "50px",
-    width: "100%",
-    marginLeft: "0px"
-};
 
 
 ReactDOM.render(
@@ -23,14 +17,11 @@ ReactDOM.render(
     <BrowserRouter>
     
         <div>
-            <div style={headerStyle}>
+            <div>
             
-            <Header
-                label={
-                    'GOOD KARMA'
-                    
-                }
-            ></Header>
+            <Header>
+                
+            </Header>
                 {
                     /*
                         Links are rendered as HTML <a/> elements and
