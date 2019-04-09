@@ -10,7 +10,3 @@ export the following:
 
     sudo docker run --name GoodKarma -p "$DATABASE_PORT":"$DATABASE_PORT" -e POSTGRES_PASSWORD="$DATABASE_PASSWORD" -e POSTGRES_USER="$DATABASE_USER" -e POSTGRES_DB="$DATABASE_DB" -d postgres:9.5
 
-
-
-
-teste RegianeLinda
