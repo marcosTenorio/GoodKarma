@@ -1,13 +1,9 @@
 import React from 'react';
 
+
 interface HeaderProps {
 }
 
-/*
-interface HeaderState {
-    //
-}
-*/
 
 export function Header(props: HeaderProps) {
    
