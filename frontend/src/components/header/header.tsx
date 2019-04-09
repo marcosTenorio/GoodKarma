@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../logo.png';
 
 
 interface HeaderProps {
@@ -8,6 +9,6 @@ interface HeaderProps {
 export function Header(props: HeaderProps) {
    
     return <div className="header">
-        <h1> Good Karma</h1>
+            <a href="/"/><img src={logo} alt="logo" height="40px"></img>
     </div>;
 }

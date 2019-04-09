@@ -6,6 +6,9 @@ let d = new Date();
 
 interface LinksItem {
     userId: number;
+    user: {
+        name: string;
+    },
     id: number;
     title: string;
     question: string;
@@ -18,13 +21,15 @@ interface LinkssProps {
 
 interface LinkssState {
     links: LinksItem[] | null;
+    query: string;
 }
 
 export class Links extends React.Component<LinkssProps, LinkssState> {
     public constructor(props: LinkssProps) {
         super(props);
         this.state = {
-            links: null
+            links: null,
+            query: ""
         };
     }
     public componentDidMount() {
@@ -43,7 +48,7 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
                     items={
                         this.state.links.map((links) => {
                             return <div>
-                                <h6>{"Posted by "}{links.userId}{"_____________"} {d.toDateString()}</h6>
+                                <h6>{"Posted by "}{links.user.name}{"_____________"} {d.toDateString()}</h6>
                                 <h4>{links.title}{"______________"} {links.field}</h4>
                                 {links.question}
                             </div>; 

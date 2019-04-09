@@ -21,7 +21,11 @@ export function getHandlers(linkRepo: Repository <Link>) {
     const getAllLinks = (req: express.Request, res: express.Response) => {
         (async () => {
             try {
-                const links = await linkRepo.find();
+                const links = await linkRepo.createQueryBuilder("link")
+                    .leftJoinAndSelect("link.user", "user")
+                    .getMany();
+
+                // const links = await linkRepo.find();
                 res.json(links);
             }catch (err) {
                 // Handle unexpected errors

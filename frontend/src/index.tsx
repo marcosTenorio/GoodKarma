@@ -9,7 +9,14 @@ import { Register } from './pages/register';
 import { Profile } from './pages/profile';
 import { Header } from './components/header/header';
 import {SearchBar } from './components/searchBar/searchBar';
+import logo from './logo.png';
 
+
+const headerStyle: React.CSSProperties = {
+    backgroundColor: "pink",
+    height: "100px",
+    width: "100%"
+};
 
 
 ReactDOM.render(
@@ -19,18 +26,18 @@ ReactDOM.render(
         <div>
             <div>
             
-            <Header>
-              
-            </Header>
+    
+            <div style={headerStyle}>
+            
                 {
                     /*
                         Links are rendered as HTML <a/> elements and
                         can be used to navigate from a page to another
                     */
                 }
-             
+                <a href="/"><img src={logo} className="img" alt="logo" height="40px"></img></a>
                 
-                <Link className="links" style={{ color: "#ffffff" }} to="/">Home</Link>
+                <Link className="links" to="/">Home</Link>
             
                 {
                     (() => {
@@ -61,6 +68,7 @@ ReactDOM.render(
                     the matching path
                 */
             }
+            </div>
             <Switch>
                 {
                     /*
