@@ -32,7 +32,7 @@ export class LoginInternal extends React.Component<LoginProps, LoginState> {
     }
     public render() {
         return (
-            <div>
+            <div className="inputs">
                 {this._renderServerErrors()}
                 {this._renderValidationErrors()}
                 <input

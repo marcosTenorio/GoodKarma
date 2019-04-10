@@ -20,13 +20,16 @@ export class Link {
     @Column()
     public field!: string; //Business or IT
 
+    @Column({nullable: true})
+    public date: string;
+
     // an user can have many links, but a link only belongs to an user
     @ManyToOne(type => User, user => user.links)
     public user!: User;
 
     // a link can have many replies, but a reply only belongs to a link
     @OneToMany(type => Reply, reply => reply.link)
-    reply: Reply[];
+    public reply!: Reply[];
 }
 // edited tsconfig.json
 //strictPropertyInitialization": false

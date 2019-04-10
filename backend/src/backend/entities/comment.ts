@@ -16,6 +16,9 @@ export class Comment {
 
     @Column()
     public text!: string;
+
+    @Column({nullable: true})
+    public date: string;
    
     // a user can have many comments, but a comment only belongs to a user
     @ManyToOne(type => User, user => user.comments)

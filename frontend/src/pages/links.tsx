@@ -1,18 +1,24 @@
 import * as React from "react";
 import { Listview } from "../components/listview/listview";
 import { Link } from "react-router-dom";
+import { link } from "fs";
 
 let d = new Date();
 
 interface LinksItem {
-    userId: number;
     user: {
         name: string;
+    },
+    reply: {
+        id: number,
+        text: string;
+        userId: number;
     },
     id: number;
     title: string;
     question: string;
     field: string;
+    date: string;
 }
 
 interface LinkssProps {
@@ -47,10 +53,14 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
                 <Listview
                     items={
                         this.state.links.map((links) => {
+                            // counts how many replies in each link
+                            let replies = Object.keys(links.reply).length;
+                            let s = (replies <= 1) ? "reply" : "replies";
                             return <div>
-                                <h6>{"Posted by "}{links.user.name}{"_____________"} {d.toDateString()}</h6>
-                                <h4>{links.title}{"______________"} {links.field}</h4>
-                                {links.question}
+                                
+                                <h6>{"Posted by "}{links.user.name}    {"----"}      {links.date}</h6>
+                                <h4>{links.title}    {"----"}            {links.field}</h4>
+                                {links.question}    <h5> {replies} {s}</h5>
                             </div>; 
                         })
                     }

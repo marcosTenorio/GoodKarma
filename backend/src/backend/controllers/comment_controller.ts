@@ -46,6 +46,8 @@ export function getHandlers(commentRepo: Repository<Comment>) {
                     commentToBeSaved.userId = (req as AuthenticatedRequest).userId;
                     commentToBeSaved.text = newComment.text;
                     commentToBeSaved.replyId = newComment.replyId;
+                    let today = new Date();
+                    commentToBeSaved.date = "at " + today.getDate() + "-" +(today.getMonth() +1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes(); 
                     const savedLink = await commentRepo.save(commentToBeSaved);
                     res.json(savedLink).send();
                 }

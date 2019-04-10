@@ -23,6 +23,7 @@ export function getHandlers(linkRepo: Repository <Link>) {
             try {
                 const links = await linkRepo.createQueryBuilder("link")
                     .leftJoinAndSelect("link.user", "user")
+                    .leftJoinAndSelect("link.reply", "reply")
                     .getMany();
 
                 // const links = await linkRepo.find();
@@ -95,6 +96,8 @@ export function getHandlers(linkRepo: Repository <Link>) {
                     linkToBeSaved.question = req.body.question;
                     linkToBeSaved.title = newLink.title;
                     linkToBeSaved.field = newLink.field;
+                    let today = new Date();
+                    linkToBeSaved.date = "at " + today.getDate() + "-" +(today.getMonth() +1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes(); 
                     const savedLink = await linkRepo.save(linkToBeSaved);
                     res.json(savedLink).send();
                 }

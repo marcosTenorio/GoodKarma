@@ -14,7 +14,8 @@ export class Listview extends React.Component<ListviewProps, ListviewState> {
             fontFamily: `Rubik,Lato,"Lucida Grande","Lucida Sans Unicode",Tahoma,Sans-Serif`,
             fontSize: "20px",
             border: "1px solid",
-            width: "600px"
+            width: "600px",
+            height: "auto"
         };
         if (this.props.items.length < 1) {
             return <div>There is no items!</div>;

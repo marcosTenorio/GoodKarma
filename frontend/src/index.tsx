@@ -13,9 +13,10 @@ import logo from './logo.png';
 
 
 const headerStyle: React.CSSProperties = {
-    backgroundColor: "pink",
+    backgroundColor: "white",
     height: "100px",
-    width: "100%"
+    width: "100%",
+    borderBottom: "2px solid black"
 };
 
 
@@ -44,7 +45,7 @@ ReactDOM.render(
                         const token: string | undefined = (window as any).__token;
                         if (typeof token === "string") {
                             return <div className="btns">        
-                                        <Link style={{ color: "#black" }} to="/profile">Profile</Link>
+                                        <Link style={{ color: "black", border:"2px solid black"  }} to="/profile">Profile</Link>
                                     </div>
                         } else {
                             return <div className="btns">
