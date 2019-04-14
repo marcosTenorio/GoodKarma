@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { Repository } from "typeorm";
 import { getUserRepository } from "../repositories/user_repository";
 import { User } from "../entities/user";
-import { AuthTokenContent, AuthenticatedRequest } from "../config/middleware";
+import { AuthTokenContent, AuthenticatedRequest, authMiddleware } from "../config/middleware";
 import { userDetailsSchema } from "./users_controller";
 
 // We pass the repository instance as an argument
@@ -20,7 +20,7 @@ export function getHandlers(AUTH_SECRET: string, userRepository: Repository<User
                 const result = joi.validate(userDetails, userDetailsSchema);
 
                 if (result.error) {
-                    res.status(400).send();
+                    res.status(400).json({ error: "Bad Request" }).send();
                 } else {
 
                     // Try to find the user with the given credentials
@@ -33,7 +33,7 @@ export function getHandlers(AUTH_SECRET: string, userRepository: Repository<User
 
                     // Return error HTTP 404 not found if not found
                     if (user === undefined) {
-                        res.status(401).send();
+                        res.status(401).json({ error: "Unauthorized" }).send();
                     } else {
 
                         // Create JWT token
@@ -93,7 +93,9 @@ export function getAuthController() {
 
     // Public
     router.post("/login", handlers.login);
-    router.post("/profile", handlers.getProfile);
+
+    //Private
+    router.post("/profile", authMiddleware, handlers.getProfile);
 
     return router;
 }

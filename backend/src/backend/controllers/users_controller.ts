@@ -51,8 +51,6 @@ export function getHandlers(AUTH_SECRET: string,userRepository: Repository<User>
                         res.json({ token: token }).send();
                         res.json({ ok: "ok" }).send();
                     }
-
-                    
                 }
 
             } catch(err) {

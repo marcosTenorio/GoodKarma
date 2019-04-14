@@ -1,9 +1,7 @@
 import * as React from "react";
 import { Listview } from "../components/listview/listview";
 import { Link } from "react-router-dom";
-import { link } from "fs";
 
-let d = new Date();
 
 interface LinksItem {
     user: {
@@ -49,7 +47,6 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
             return <div>Loading...</div>;
         } else {
             return <div>
-                {this._renderPrivate()}
                 <Listview
                     items={
                         this.state.links.map((links) => {
@@ -60,7 +57,7 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
                                 
                                 <h6>{"Posted by "}{links.user.name}    {"----"}      {links.date}</h6>
                                 <h4>{links.title}    {"----"}            {links.field}</h4>
-                                {links.question}    <h5> {replies} {s}</h5>
+                                {links.question}    <h5> <Link className="replies" to="/replies">{replies} {s}</Link> </h5>
                             </div>; 
                         })
                     }
@@ -68,12 +65,7 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
             </div>;
         }
     }
-    private _renderPrivate() {
-        const token: string | undefined = (window as any).__token;
-        if (typeof token === "string") {
-            return <Link style={{ color: "#ffffff" }} to="/profile">Profile</Link>
-        }
-    }
+    
 }
 
 async function getData() {
