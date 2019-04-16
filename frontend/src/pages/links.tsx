@@ -1,42 +1,29 @@
 import * as React from "react";
 import { Listview } from "../components/listview/listview";
 import { Link } from "react-router-dom";
+import { LinkDetails, LinkPreviewDetails } from "../components/link_details/link_details";
 
 
-interface LinksItem {
-    user: {
-        name: string;
-    },
-    reply: {
-        id: number,
-        text: string;
-        userId: number;
-    },
-    id: number;
-    title: string;
-    question: string;
-    field: string;
-    date: string;
-}
 
-interface LinkssProps {
+
+interface LinksProps {
     //
 }
 
-interface LinkssState {
-    links: LinksItem[] | null;
+interface LinksState {
+    links: LinkPreviewDetails[] | null;
     query: string;
 }
 
-export class Links extends React.Component<LinkssProps, LinkssState> {
-    public constructor(props: LinkssProps) {
+export class Links extends React.Component<LinksProps, LinksState> {
+    public constructor(props: LinksProps) {
         super(props);
         this.state = {
             links: null,
             query: ""
         };
     }
-    public componentDidMount() {
+    public componentWillMount() {
         (async () => {
             const data = await getData();
             this.setState({ links: data });
@@ -46,24 +33,42 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
         if (this.state.links === null) {
             return <div>Loading...</div>;
         } else {
-            return <div>
-                <Listview
-                    items={
-                        this.state.links.map((links) => {
-                            // counts how many replies in each link
-                            let replies = Object.keys(links.reply).length;
-                            let s = (replies <= 1) ? "reply" : "replies";
-                            return <div>
-                                
-                                <h6>{"Posted by "}{links.user.name}    {"----"}      {links.date}</h6>
-                                <h4>{links.title}    {"----"}            {links.field}</h4>
-                                {links.question}    <h5> <Link className="replies" to="/replies">{replies} {s}</Link> </h5>
-                            </div>; 
-                        })
-                    }
-                />
+                const filteredLinks = this.state.links.filter((link) => {
+                    return link.title.indexOf(this.state.query) !== -1;
+                });
+                return <div>
+                    <input
+                        className="input-text"
+                        placeholder="Search"
+                        type="text"
+                        onKeyUp = {(e) => this._onSearch(e.currentTarget.value)}
+                    />
+                    <Listview
+                        items={
+                            filteredLinks.map((link, linkIndex) => {
+                                return (
+                                    <Link to = {`/link_details/${link.id}`}>
+                                        <LinkDetails key={linkIndex} {...link} />
+                                    </Link>
+                                );
+
+                                // // counts how many replies in each link
+                                // let replies = Object.keys(links.reply).length;
+                                // let s = (replies <= 1) ? "reply" : "replies";
+                                // return <div>
+                                    
+                                //     <h6>{"Posted by "}{links.user.name}    {"----"}      {links.date}</h6>
+                                //     <h4>{links.title}    {"----"}            {links.field}</h4>
+                                //     {links.question}    <h5> <Link className="replies" to="/replies">{replies} {s}</Link> </h5>
+                            })
+                        }
+                    />
             </div>;
         }
+    }
+
+    private _onSearch(query: string){
+        this.setState({query: query});
     }
     
 }
@@ -71,5 +76,5 @@ export class Links extends React.Component<LinkssProps, LinkssState> {
 async function getData() {
     const response = await fetch("/links");
     const json = await response.json();
-    return json as LinksItem[];
+    return json as LinkPreviewDetails[];
 }

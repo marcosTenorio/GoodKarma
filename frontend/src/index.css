@@ -16,23 +16,147 @@ code {
 }
 
 
-.searchBox {
-  float: center;
-  margin-left: 40px;
-  margin-top: 40px;
-}
-
-
-.header{
-  background-color:black;
-  width: 100%;
-  height: 70px;
-}
-
 .img{
   padding:20px;
 }
 
 .inputs{
   padding:50px;
+}
+.input-text {
+  border: 1px solid #000000;
+  line-height: 30px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 97.3%;
+}
+
+.link-details {
+  border: 1px solid #000000;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.comment-details {
+  border: 1px solid #000000;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.comment-details .left {
+  text-align: center;
+  border-right: 1px solid #000000;
+  padding: 10px;
+  width: 5%;
+}
+
+.comment-details .right {
+  padding: 10px;
+}
+
+.link-details .left {
+  text-align: center;
+  border-right: 1px solid #000000;
+  padding: 10px;
+  width: 5%;
+}
+
+.link-details .right {
+  padding: 10px;
+}
+
+.link-details .right .title {
+  margin: 0px;
+}
+
+.link-details .right .comment-count {
+  margin-top: 15px;
+  font-size: 12px;
+}
+
+.link-details .right .url {
+  color: #7c7c7c;
+}
+
+.container {
+  max-width: 80%;
+  margin: auto;
+}
+
+.list-view {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.list-view li {
+  margin: 0px;
+  padding: 0px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.top-navbar {
+  border-bottom: 1px solid #000000;
+  padding-top: 15px;
+  min-height: 50px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  border: 1px solid #000000;
+  padding:5px;
+  margin-right: 5px;
+  background-color: #c2c2c2;
+  text-transform: uppercase;
+}
+
+.top-navbar a {
+  padding:5px;
+  margin-right: 5px;
+}
+
+.top-navbar .right {
+  float: right;
+  width: 100px;
+  text-align: center;
+}
+
+.top-navbar .left {
+  padding: 20px;
+}
+
+.error-msg {
+  background-color: rgb(255, 177, 177);
+  border: 1px solid red;
+  color: red;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.success-msg {
+  background-color: rgb(193, 255, 193);
+  border: 1px solid green;
+  color: green;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.login-container {
+  max-width: 50%;
+  margin: auto;
+  border: 1px solid #000000;
+  padding: 20px;
+  text-align: center;
+}
+
+.vote-btn {
+  font-weight: 800;
+  font-size: 30px;
 }

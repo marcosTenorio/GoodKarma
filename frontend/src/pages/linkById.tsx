@@ -26,6 +26,7 @@ interface RepliesItem {
     date: string;
 }
 
+
 interface RepliesProps {
     token: string | null;
 }
@@ -64,13 +65,9 @@ export class LinkById extends React.Component<RepliesProps, RepliesState> {
                     <Listview
                         items={
                             this.state.replies.map((replies) => {
-                                // count how many replies in each link
-                                let comments = Object.keys(replies.reply).length;
-                                let c = (comments <= 1) ? "comment" : "comments";
                                 return <div>
                                     
                                     <h6>{"Posted by "}{replies.user.name}    {"----"}      {replies.date}</h6>
-                                    <h5> {comments} {c}</h5>
                                 </div>; 
                             })
                         }
