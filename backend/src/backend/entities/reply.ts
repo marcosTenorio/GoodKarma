@@ -20,7 +20,7 @@ export class Reply {
     public text!: string;
 
     @Column({nullable: true})
-    public date: string;
+    public date: Date;
 
     // an user can have many replies, but a reply only belongs to an user
     @ManyToOne(type => User, user => user.replies)

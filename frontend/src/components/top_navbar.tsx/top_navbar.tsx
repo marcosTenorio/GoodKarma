@@ -43,4 +43,4 @@ class TopNavBarInternal extends React.Component<TopNavBarInternalProps, TopNavBa
 }
 
 // withAuth will trigger a re-render
-export const TopNavBar = withAuth(props => <TopNavBarInternal token = {props.authToken} />);
+export const TopNavBar = withAuth(props => <TopNavBarInternal token = {props.authToken} />)

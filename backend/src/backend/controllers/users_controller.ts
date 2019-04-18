@@ -19,7 +19,7 @@ export const userDetailsSchema = {
 
 // We pass the repository instance as an argument
 // We use this pattern so we can unit test the handlers with ease
-export function getHandlers(AUTH_SECRET: string,userRepository: Repository<User>) {
+export function getHandlers(userRepository: Repository<User>) {
 
     // Creates a new user
     const createUser =  (req: express.Request, res: express.Response) => {
@@ -35,24 +35,8 @@ export function getHandlers(AUTH_SECRET: string,userRepository: Repository<User>
                 } else {
                     // Save the user into the database
                     await userRepository.save(newUser);
-
-                    const user = await userRepository.findOne({
-                        where: {
-                            name: newUser.name,
-                            email: newUser.email,
-                            password: newUser.password
-                        }
-                    });
-                    if (user === undefined) {
-                        res.status(401).send();
-                    }else{
-                        const tokenContent: AuthTokenContent = { id: user.id };
-                        const token = jwt.sign(tokenContent, AUTH_SECRET);
-                        res.json({ token: token }).send();
-                        res.json({ ok: "ok" }).send();
-                    }
+                    res.json({ ok: "ok" }).send();
                 }
-
             } catch(err) {
                 // Handle unexpected errors
                 console.error(err);
@@ -109,9 +93,25 @@ export function getHandlers(AUTH_SECRET: string,userRepository: Repository<User>
         })();
     };
 
+    const countUsers = (req: express.Request, res: express.Response) => {
+        (async () => {
+            try {
+                const result = await userRepository.query("SELECT COUNT(*) FROM plublic.user");
+                res.json({ count: result[0].count });
+            } catch(err){
+                // Handle unexpected errors
+                console.error(err);
+                res.status(500)
+                .json({ error: "Internal server error"})
+                .send();
+            }
+        })();
+    }
+
     return {
         createUser,
-        getUserById
+        getUserById,
+        countUsers
     };
 
 }
@@ -125,13 +125,12 @@ export function getUserController() {
     }
 
     const repository = getUserRepository();
-    const handlers = getHandlers(AUTH_SECRET,repository);
+    const handlers = getHandlers(repository);
     const router = express.Router();
 
     // Public
     router.post("/", handlers.createUser);
-
-    // Private
+    router.get("/count", handlers.countUsers);
     router.get("/:id", authMiddleware, handlers.getUserById);
 
     return router;

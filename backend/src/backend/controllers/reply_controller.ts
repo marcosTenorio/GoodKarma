@@ -48,8 +48,9 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
                     replyToBeSaved.userId = (req as AuthenticatedRequest).userId;
                     replyToBeSaved.linkId = newReply.linkId;
                     replyToBeSaved.text = newReply.text;
-                    let today = new Date();
-                    replyToBeSaved.date = "at " + today.getDate() + "-" +(today.getMonth() +1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes(); 
+                    replyToBeSaved.date = new Date();
+                    // let today = new Date();
+                    // replyToBeSaved.date = "at " + today.getDate() + "-" +(today.getMonth() +1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes(); 
                     const savedReply = await replyRepo.save(replyToBeSaved);
                     res.json(savedReply).send();
                 }

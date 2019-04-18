@@ -60,8 +60,23 @@ export function getHandlers(AUTH_SECRET: string, userRepository: Repository<User
         (async () => {
             try {
                 const userId = (req as AuthenticatedRequest).userId;
-                const user = await userRepository.findOne(userId);
-                res.json(user).send();
+
+                // try to find the user and its activity by the given ID
+                const user = await userRepository.createQueryBuilder("user")
+                    .leftJoinAndSelect("user.replies", "reply")
+                    .leftJoinAndSelect("user.links", "link")
+                    .getOne();
+                
+                // return error HTTP 404 not found if not found
+                if (user === undefined) {
+                    res.status(404)
+                    .json({ msg: `User with id '${userId}' not found` })
+                    .send();
+                } else {
+                    // return the user
+                    res.json(user).send();
+                }
+                
             } catch(err) {
                 // Handle unexpected errors
                 console.error(err);

@@ -1,27 +1,20 @@
 import React from 'react'
 
 export interface LinkPreviewDetails {
-    user: {
-        name: string;
-    },
-    reply: {
-        id: number,
-        text: string;
-        userId: number;
-    },
     id: number;
     userId: number;
+    email: string;
+    name: string;
     title: string;
     question: string;
-    name: string;
-    dateTime: string;
+    field: string;
+    date: string;
     replyCount: number | null;
 }
 
 interface LinkDetailsProps extends LinkPreviewDetails {
-    // ..
+    id: number;
 }
-
 interface LinkDetailsState {
     //
 }
@@ -33,11 +26,13 @@ export class LinkDetails extends React.Component<LinkDetailsProps, LinkDetailsSt
                 <tbody>
                     <tr>
                         <td className="left">
-                        
+                            <div className="vote-btn">|</div>
+
+                            <div className="vote-btn">|</div>
                         </td>
                         <td className="right">
-                            <div className="audit">{this.renderTimeSinceDate(this.props.dateTime)} ago by {this.props.user.name}</div>
-                            <h2 className="title">{this.props.title}</h2>
+                            <div className="audit">{this.renderTimeSinceDate(this.props.date)} ago by {this.props.name}</div>
+                            <h2 className="title">{this.props.title}  {this.props.field}</h2>
                             <div className="url">{this.props.question}</div>
                             <div className="comment-count">{this.props.replyCount} Replies</div>
                         </td>

@@ -21,7 +21,7 @@ export class Link {
     public field!: string; //Business or IT
 
     @Column({nullable: true})
-    public date: string;
+    public date: Date;
 
     // an user can have many links, but a link only belongs to an user
     @ManyToOne(type => User, user => user.links)
