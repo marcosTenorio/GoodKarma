@@ -32,11 +32,14 @@ class TopNavBarInternal extends React.Component<TopNavBarInternalProps, TopNavBa
 
     private _renderLoginOrProfile() {
         if(this.props.token) {
-            return <Link className="btn right" to="/profile">User Profile</Link>
+            return <React.Fragment>
+                <Link className="btn right" to="/">Log out</Link>
+                <Link className="btn right" to="/profile">Profile</Link>
+                </React.Fragment>
         } else {
             return <React.Fragment>
-                <Link className="btn right" to="login">Log in</Link>
-                <Link className="btn right" to="register">Register</Link>
+                <Link className="btn right" to="/login">Log in</Link>
+                <Link className="btn right" to="/register">Register</Link>
             </React.Fragment>
         }
     }

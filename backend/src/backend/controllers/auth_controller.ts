@@ -65,6 +65,7 @@ export function getHandlers(AUTH_SECRET: string, userRepository: Repository<User
                 const user = await userRepository.createQueryBuilder("user")
                     .leftJoinAndSelect("user.replies", "reply")
                     .leftJoinAndSelect("user.links", "link")
+                    .where("user.id = :id", { id: userId })
                     .getOne();
                 
                 // return error HTTP 404 not found if not found

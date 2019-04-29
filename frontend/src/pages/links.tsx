@@ -35,6 +35,16 @@ export class Links extends React.Component<LinksProps, LinksState> {
             this.setState({ link: data });
         })();
     }
+
+
+    public componentWillUpdate() {
+        (async () => {
+            const data = await getData();
+            this.setState({ link: data });
+        })();
+    }
+
+
     public render() {
         if (this.state.link === null) {
             return <div>Loading...</div>;
@@ -49,7 +59,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                     type="text"
                     onKeyUp={(e) => this._onSearch(e.currentTarget.value)}
                 />
-                {/* {this._renderPostEditor()} */}
+                {this._renderPostEditor()}
                 <Listview
                     items={
                         filteredLinks.map((link, linkIndex) => {
@@ -65,38 +75,48 @@ export class Links extends React.Component<LinksProps, LinksState> {
         }
     }
 
-    // private _renderPostEditor() {
-    //     return (
-    //         <React.Fragment>
-    //             <div>
-    //                 <input
-    //                     type="text"
-    //                     placeholder="Title"
-    //                     onKeyUp={(e) => this._updateTitle((e as any).target.value)}
-    //                 />
-    //                 <br />
-    //                 <textarea
-    //                     placeholder="write your question here.."
-    //                     onKeyUp={(e) => this._updateQuestion((e as any).target.value)}
-    //                 />
-    //                 <br />
-    //                 <label>Field: </label>
-    //                 <select
-    //                     defaultValue={'DEFAULT'}
-    //                     onChange={e => this.setState({ field: e.target.value })}
-    //                 >
-    //                     <option value="DEFAULT" selected disabled hidden>Choose here</option>
-    //                     <option value="IT">IT</option>
-    //                     <option value="Business">Business</option>
-    //                 </select>
+    private _renderPostEditor() {
+        const token = getAuthToken();
+        if (token) {
+            return (
+                <React.Fragment>
+                    <div>
+                        <ul>
+                        <input
+                            type="text"
+                            placeholder="Title"
+                            onKeyUp={(e) => this._updateTitle((e as any).target.value)}
+                        />
+                        <br />
+                        <textarea
+                            className = "input-text"
+                            placeholder="write your question here.."
+                            onKeyUp={(e) => this._updateQuestion((e as any).target.value)}
+                        />
+                        <br />
+                        <label>Field: </label>
+                        <select
+                            defaultValue={'DEFAULT'}
+                            onChange={e => this.setState({ field: e.target.value })}
+                        >
+                            <option value="DEFAULT" selected disabled hidden>Choose here</option>
+                            <option value="IT">IT</option>
+                            <option value="Business">Business</option>
+                        </select>
+                        <button 
+                            className = "btn right"
+                            onClick={() => this._handleSubmit()}>
+                            Post
+                        </button>
+                        </ul>
+                    </div>
 
-    //                 <br />
-    //                 <button onClick={() => this._handleSubmit()}>Post</button>
-    //             </div>
-
-    //         </React.Fragment>
-    //     )
-    // }
+                </React.Fragment>
+            )    
+        } else{
+            return <div>Please sign in if you wish to create a new post...<br/></div>;
+        }
+    }
 
     // Update the state (title) on keyup
     private _updateTitle(title: string) {
@@ -111,27 +131,23 @@ export class Links extends React.Component<LinksProps, LinksState> {
         this.setState({ query: query });
     }
 
-    private _handleSubmit(){
-        const token = getAuthToken();
-        if(token){
+    private _handleSubmit() {
             (async () => {
                 try {
-                    const newReply = await createPost(
+                    const token = getAuthToken();
+                    if(token){
+                        const newReply = await createPost(
                         //this.state.user.id,
                         this.state.title,
                         this.state.field,
                         this.state.question,
                         token
-                    );
-                } catch(err) {
-                    
+                        );
+                    }
+                } catch (err) {
+
                 }
             })();
-        } else {
-            <div>Please sign in if you wish to create a new post...</div>
-        }
-
-        
     }
 }
 

@@ -26,9 +26,7 @@ export class LinkDetails extends React.Component<LinkDetailsProps, LinkDetailsSt
                 <tbody>
                     <tr>
                         <td className="left">
-                            <div className="vote-btn">|</div>
-
-                            <div className="vote-btn">|</div>
+                        
                         </td>
                         <td className="right">
                             <div className="audit">{this.renderTimeSinceDate(this.props.date)} ago by {this.props.name}</div>

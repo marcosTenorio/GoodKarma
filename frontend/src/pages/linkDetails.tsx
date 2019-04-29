@@ -1,6 +1,7 @@
 import * as React from "react"
 import { LinkDetails as LinkDetailsComponent, LinkPreviewDetails } from "../components/link_details/link_details";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import { Reply , ReplyDetails } from "../components/reply/reply";
 import { Listview } from "../components/listview/listview";
 import { getAuthToken } from "../components/with_auth/with_auth";
@@ -40,6 +41,14 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
             this.setState({ link: data});
         })();
     }
+
+    public componentWillUpdate(){
+        (async () => {
+            const data = await getData(this.props.id);
+            this.setState({ link: data});
+        })();
+    }
+    
     public render() {
         if (this.state.link === null){
             return <div>Loading...</div>;

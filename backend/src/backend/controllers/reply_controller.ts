@@ -21,8 +21,103 @@ export const newReplySchema = {
     text: joi.string()
 };
 
+interface ReplyPreviewDetails {
+    id: number;
+    userId: number;
+    name: string;
+    text: string;
+    date: string;
+    commentCount: number | null;
+    karmaCount: number | null;
+}
+
 
 export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<Karma>) {
+
+
+
+    const getReplyById = (req: express.Request, res: express.Response) => {
+        (async () => {
+            try {
+
+                // Validate Id in URL
+                const idStr = req.params.id;
+                const replyId = { id: parseInt(idStr) };
+                const idValidationresult = joi.validate(replyId, replyIdSchema);
+
+                if (idValidationresult.error) {
+                    res.status(400).json({ error: "Bad request" }).send();
+                } else {
+
+                    const queryResult = await replyRepo.query(`
+                        SELECT
+                            "reply"."id",
+                            "reply"."userId",
+                            "user"."name",
+                            "reply"."text",
+                            "reply"."date",
+                            count("comment"."id") "commentCount"
+                        FROM "reply" "reply"
+                        LEFT JOIN "user" "user" ON "user"."id" = "reply"."userId"
+                        LEFT JOIN "comment" "comment" ON "comment"."replyId" = "comment"."id"
+                        WHERE "reply"."id" = $1
+                        GROUP BY "reply"."id", "user"."name"
+                    `, [ replyId.id ]);
+
+                    const replyPreviewDetails: ReplyPreviewDetails = queryResult[0];
+
+                    if (replyPreviewDetails === undefined) {
+                        res.status(404)
+                            .json({ error: "Not found" })
+                            .send();
+                    } else {
+
+                        const comments = await replyRepo.query(`
+                            SELECT
+                                "comment"."id",
+                                "comment"."userId",
+                                "user"."name",
+                                "comment","replyId",
+                                "comment"."text",
+                                "comment"."date"
+                            FROM "comment" "comment"
+                            LEFT JOIN "user" "user" ON "user"."id" = "comment"."userId"
+                            WHERE "replyId" = $1
+                        `, [replyId.id]);
+
+                        const reply = {
+                            id: replyPreviewDetails.id,
+                            userId: replyPreviewDetails.userId,
+                            name: replyPreviewDetails.name,
+                            text: replyPreviewDetails.text,
+                            date: replyPreviewDetails.date,
+                            commentCount: replyPreviewDetails.commentCount,
+                            karmaCount: replyPreviewDetails.karmaCount,
+                            comments: comments
+                        };
+
+                        res.json(reply);
+                    }
+                }
+            } catch (err) {
+                // Handle unexpected errors
+                console.error(err);
+                res.status(500)
+                    .json({ error: "Internal server error" })
+                    .send();
+            }
+        })();
+    }
+
+
+
+
+
+
+
+
+
+
 
     // Create a new reply
     const createReply = (req: express.Request, res: express.Response) => {
@@ -192,7 +287,7 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
                         } else {
                             //delete karma points linked to the reply to be deleted
                             if(karmaToBeDeleted !== undefined){
-                                await karmaRepo.delete(karmaToBeDeleted);
+                               // await karmaRepo.delete(karmaToBeDeleted);
                             }
 
                             // Delete reply
@@ -211,6 +306,16 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
             }
         })();
     }
+
+    async function getKarmaCount(replyId: number) {
+        const queryResult = await karmaRepo.query(`
+            SELECT "replyId", count(*) "count"
+            FROM "karma"
+            GROUP BY "replyId"`);
+        return queryResult[0];
+    }
+
+
 
     const karmaVote = (req: express.Request, res: express.Response) => {
         (async () => {
@@ -261,7 +366,8 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
                         karmaToBeSaved.replyId = replyId.id;
                         karmaToBeSaved.userId = (req as AuthenticatedRequest).userId;
                         await karmaRepo.save(karmaToBeSaved);
-                        res.status(200).json({ ok: "ok" }).send();
+                        const karmaCount = await getKarmaCount(replyId.id);
+                        res.status(200).json(karmaCount);
                     }
                 }
 
@@ -276,6 +382,7 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
     }
     
     return {
+        getReplyById,
         updateReply,
         createReply,
         deleteReplyById,
@@ -296,6 +403,7 @@ export function getReplyController() {
     const router = express.Router();
 
     // Private
+    router.get("/:id", authMiddleware, handlers.getReplyById);
     router.post("/", authMiddleware, handlers.createReply);
     router.patch("/:id", authMiddleware, handlers.updateReply);
     router.delete("/:id", authMiddleware, handlers.deleteReplyById);

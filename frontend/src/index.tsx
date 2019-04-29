@@ -8,7 +8,7 @@ import { Login, Register } from './pages/login';
 import { Profile } from './pages/profile';
 import { TopNavBar } from './components/top_navbar.tsx/top_navbar';
 import { LinkDetails } from './pages/linkDetails';
-
+import { ReplyDetails } from './pages/replyDetails';
 
 
 
@@ -24,6 +24,7 @@ ReactDOM.render(
                     <Route exact path="/profile" component={Profile} />
                     <Route exact path="/profile/:id" component={Profile} />
                     <Route exact path="/link_details/:id" component={LinkDetails} />
+                    <Route exact path="/reply_details/:id" component={ReplyDetails} />
                 </Switch>
             </div>
         </div>
