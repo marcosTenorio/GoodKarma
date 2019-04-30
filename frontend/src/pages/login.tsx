@@ -46,7 +46,7 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
                 <div>
                     <input
                         className="input-text"
-                        style={{ width: "94%"}}
+                        style={{ width: "80%"}}
                         type="text"
                         placeholder="e-mail"
                         onKeyUp={(e) => this._updateEmail((e as any).target.value)}
@@ -55,7 +55,7 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
                 <div>
                     <input
                         className="input-text"
-                        style={{ width: "94%"}}
+                        style={{ width: "80%"}}
                         type="password"
                         placeholder="password"
                         onKeyUp={(e) => this._updatePassword((e as any).target.value)}
@@ -65,7 +65,7 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
                     <button
                         onClick={() => this._handleSubmit()}
                         className="btn"
-                        style={{ width: "100%"}}
+                        style={{ width: "30%"}}
                     >
                     Submit
                     </button>
@@ -100,7 +100,7 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
         return <div>
             <input
                 className="input-text"
-                style={{ width: "94%"}}
+                style={{ width: "80%"}}
                 type="text"
                 placeholder="name"
                 onKeyUp={(e) => this._updateName((e as any).target.value)}
