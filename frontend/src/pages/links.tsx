@@ -96,16 +96,18 @@ export class Links extends React.Component<LinksProps, LinksState> {
         if (token) {
             return (
                 <React.Fragment>
-                    <div>
+                    <div className = "link-post">
+                    
                         <ul>
                         <input
+                            className = "input-title"
                             type="text"
                             placeholder="Title"
                             onKeyUp={(e) => this._updateTitle((e as any).target.value)}
                         />
                         <br />
                         <textarea
-                            className = "input-text"
+                            className = "input-text-post"
                             placeholder="write your question here.."
                             onKeyUp={(e) => this._updateQuestion((e as any).target.value)}
                         />
@@ -120,12 +122,14 @@ export class Links extends React.Component<LinksProps, LinksState> {
                             <option value="Business">Business</option>
                         </select>
                         <button 
-                            className = "btn right"
+                            className = "btn-post"
                             onClick={() => this._handleSubmit()}>
                             Post
                         </button>
                         </ul>
+                    
                     </div>
+                    <br></br>
 
                 </React.Fragment>
             )    
