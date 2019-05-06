@@ -31,7 +31,8 @@ export class LinkDetails extends React.Component<LinkDetailsProps, LinkDetailsSt
                         </td>
                         <td className="right">
                             <div className="audit">{this.renderTimeSinceDate(this.props.date)} ago by {this.props.name}</div>
-                            <h2 className="title">{this.props.title}  {this.props.field}</h2>
+                            <h2 className="title">{this.props.title}</h2> 
+                            <h4 className="field">{this.props.field}</h4>
                             <div className="url">{this.props.question}</div>
                             <div className="comment-count"> 
                                 <Link to ={`/link_details/${this.props.id}`}> 

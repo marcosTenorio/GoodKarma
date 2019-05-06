@@ -86,7 +86,7 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
                         <button
                             onClick={() => this._handleCreateReply()}
                             style={{ width: "60%" }}
-                            className="btn"
+                            className="btn-reply"
                         >
                             Submit
                         </button>
