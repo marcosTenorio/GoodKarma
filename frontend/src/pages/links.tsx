@@ -17,17 +17,33 @@ interface LinksState {
     field: string;
 }
 
+const initialState = {
+    link: null,
+    query: "",
+    id: "",
+    title: "",
+    question: "",
+    field: "",
+    name: "",
+    email: "",
+    password: "",
+    nameError: "",
+    emailError: "",
+    passwordError: ""
+  };
+
 export class Links extends React.Component<LinksProps, LinksState> {
     public constructor(props: LinksProps) {
         super(props);
-        this.state = {
-            link: null,
-            id: "",
-            query: "",
-            title: "",
-            question: "",
-            field: ""
-        };
+        // this.state = {
+        //     link: null,
+        //     id: "",
+        //     query: "",
+        //     title: "",
+        //     question: "",
+        //     field: ""
+        // };
+        this.state = initialState;
     }
     public componentWillMount() {
         (async () => {
@@ -52,7 +68,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
             const filteredLinks = this.state.link.filter((link) => {
                 return link.title.indexOf(this.state.query) !== -1;
             });
-            return <div>
+            return <div className = "details">
                 <input
                     className="input-text"
                     placeholder="Search"
@@ -64,9 +80,9 @@ export class Links extends React.Component<LinksProps, LinksState> {
                     items={
                         filteredLinks.map((link, linkIndex) => {
                             return (
-                                <Link to={`/link_details/${link.id}`}>
+                                // <Link to={`/link_details/${link.id}`}>
                                     <LinkDetails key={linkIndex} {...link} />
-                                </Link>
+                                // </Link>
                             );
                         })
                     }
@@ -114,7 +130,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                 </React.Fragment>
             )    
         } else{
-            return <div>Please sign in if you wish to create a new post...<br/></div>;
+            return <div>Please log in if you wish to create a new post...<br/></div>;
         }
     }
 
@@ -143,6 +159,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         this.state.question,
                         token
                         );
+                        this.setState(initialState);
                     }
                 } catch (err) {
 

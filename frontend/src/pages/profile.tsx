@@ -63,7 +63,8 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
                 <div>Hello, {this.state.user.name}</div>
                 <Listview
                     items={
-                        this.state.user.links.map(link => <div>
+                        this.state.user.links.map(link => 
+                        <div>
                             <h3>{link.title}</h3>
                         </div>)
                     }

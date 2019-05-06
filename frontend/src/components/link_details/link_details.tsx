@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 
 export interface LinkPreviewDetails {
     id: number;
@@ -26,13 +27,17 @@ export class LinkDetails extends React.Component<LinkDetailsProps, LinkDetailsSt
                 <tbody>
                     <tr>
                         <td className="left">
-                        
+                            
                         </td>
                         <td className="right">
                             <div className="audit">{this.renderTimeSinceDate(this.props.date)} ago by {this.props.name}</div>
                             <h2 className="title">{this.props.title}  {this.props.field}</h2>
                             <div className="url">{this.props.question}</div>
-                            <div className="comment-count">{this.props.replyCount} Replies</div>
+                            <div className="comment-count"> 
+                                <Link to ={`/link_details/${this.props.id}`}> 
+                                    {this.props.replyCount} Replies  
+                                </Link> 
+                            </div> 
                         </td>
                     </tr>
                 </tbody>

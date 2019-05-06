@@ -1,5 +1,6 @@
 import * as React from "react"
-import { RepliesDetails as ReplyDetailsComponent } from "../components/reply_details/reply_details";
+// import { RepliesDetails as ReplyDetailsComponent } from "../components/reply_details/reply_details";
+import { Reply } from "../components/reply/reply";
 import { Comment, CommentDetails } from "../components/comment/comment";
 import { getAuthToken } from "../components/with_auth/with_auth";
 import { withRouter } from "react-router";
@@ -48,7 +49,7 @@ export class ReplyDetailsInternal extends React.Component<ReplyDetailsProps, Rep
             return <div>Loading...</div>;
         } else {
             return <div>
-                <ReplyDetailsComponent {...this.state.reply} />
+                <Reply {...this.state.reply} />
                 <Listview
                     items={
                         this.state.reply.comments.map((comment, commentIndex) => {
@@ -79,7 +80,7 @@ export class ReplyDetailsInternal extends React.Component<ReplyDetailsProps, Rep
                     <div>
                         <button
                             onClick={() => this._handleCreateComment()}
-                            style={{ width: "100%" }}
+                            style={{ width: "60%" }}
                             className="btn"
                         ></button>
                     </div>

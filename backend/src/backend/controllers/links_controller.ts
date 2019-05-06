@@ -107,10 +107,13 @@ export function getHandlers(linkRepo: Repository<Link>) {
                                 "user"."email",
                                 "reply","linkId",
                                 "reply"."text",
-                                "reply"."date"
+                                "reply"."date",
+                                count("karma"."id") "karmaCount"
                             FROM "reply" "reply"
                             LEFT JOIN "user" "user" ON "user"."id" = "reply"."userId"
+                            LEFT JOIN "karma" "karma" ON "karma"."replyId" = "reply"."id"
                             WHERE "linkId" = $1
+                            GROUP BY "reply"."id", "user"."name", "user"."email"
                         `, [linkId.id]);
 
                         const link = {

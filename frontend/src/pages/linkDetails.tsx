@@ -2,7 +2,7 @@ import * as React from "react"
 import { LinkDetails as LinkDetailsComponent, LinkPreviewDetails } from "../components/link_details/link_details";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { Reply , ReplyDetails } from "../components/reply/reply";
+import { Reply , ReplyPreviewDetails } from "../components/reply/reply";
 import { Listview } from "../components/listview/listview";
 import { getAuthToken } from "../components/with_auth/with_auth";
 
@@ -16,7 +16,7 @@ interface LinkData {
     field: string;
     date: string;
     replyCount: number | null;
-    replies: ReplyDetails[]
+    replies: ReplyPreviewDetails[]
 }
 interface LinkDetailsProps {
     id: string;
@@ -53,7 +53,8 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
         if (this.state.link === null){
             return <div>Loading...</div>;
         } else {
-            return <div>
+            return <div className = "details">
+                
                 <LinkDetailsComponent {...this.state.link} />
                 <Listview
                     items={
@@ -84,7 +85,7 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
                     <div>
                         <button
                             onClick={() => this._handleCreateReply()}
-                            style={{ width: "100%" }}
+                            style={{ width: "60%" }}
                             className="btn"
                         >
                             Submit

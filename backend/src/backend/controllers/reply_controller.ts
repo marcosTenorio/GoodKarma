@@ -56,10 +56,12 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
                             "user"."name",
                             "reply"."text",
                             "reply"."date",
-                            count("comment"."id") "commentCount"
+                            count("comment"."id") "commentCount",
+                            count("karma"."id") "karmaCount"
                         FROM "reply" "reply"
                         LEFT JOIN "user" "user" ON "user"."id" = "reply"."userId"
                         LEFT JOIN "comment" "comment" ON "comment"."replyId" = "comment"."id"
+                        LEFT JOIN "karma" "karma" ON "karma"."replyId" = "reply"."id"
                         WHERE "reply"."id" = $1
                         GROUP BY "reply"."id", "user"."name"
                     `, [ replyId.id ]);
@@ -311,7 +313,8 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
         const queryResult = await karmaRepo.query(`
             SELECT "replyId", count(*) "count"
             FROM "karma"
-            GROUP BY "replyId"`);
+            WHERE "replyId" = $1
+            GROUP BY "replyId"`, [ replyId]);
         return queryResult[0];
     }
 
@@ -345,21 +348,11 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
                         }
                     });
 
-                    //get the reply owner
-                    const replyOwner = await replyRepo.findOne({
-                        where: {
-                            replyId: replyId.id,
-                            userId: userId
-                        }
-                    });
-
-                    // The user has already voted
+                    // The user that already voted clcik again we delete the vote
                     if(karma !== undefined){
-                        // user not allowed to vote twice
-                        res.status(401).json({ error: "Forbidden - user not allowed to vote same reply twice" }).send();
-                    }else if(replyOwner !== undefined){
-                        // user not allowed to vote his own reply
-                        res.status(401).json({ error: "Forbidden - user not allowed to vote his own reply" }).send();
+                        await karmaRepo.delete({ id: karma.id});
+                        const karmaCount = await getKarmaCount(replyId.id);
+                        res.status(200).json(karmaCount);
                     } else {
                         // If there was no vote we create it
                         const karmaToBeSaved = new Karma();

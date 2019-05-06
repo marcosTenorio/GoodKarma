@@ -18,6 +18,9 @@ interface LoginOrRegisterState {
     name: string;
     email: string;
     password: string;
+    nameErr: string;
+    emailErr: string;
+    passwordErr: string;
     error: string | null;
 }
 
@@ -28,6 +31,9 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
             name: "",
             email: "",
             password: "",
+            nameErr: "",
+            emailErr: "",
+            passwordErr: "",
             error: null
         };
     }
@@ -37,20 +43,27 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
                 <h1>{this.props.isLogin ? "Log In" : "Register"}</h1>
                 <div>
                     {this._renderServerErrors()}
-                    {this._renderValidationErrors()}
+                    {/* {this._renderValidationErrors()} */}
                 </div>
                 {
                     !this.props.isLogin ? this._renderRegister() : ""
                     
-                }             
+                }
+                <div style={{ fontSize: 16, fontWeight: "bold", color: "red" }}>
+                    {this.state.emailErr}
+                </div>             
                 <div>
                     <input
                         className="input-text"
                         style={{ width: "80%"}}
                         type="text"
                         placeholder="e-mail"
+                        required
                         onKeyUp={(e) => this._updateEmail((e as any).target.value)}
                     />
+                </div>
+                <div style={{ fontSize: 16, fontWeight: "bold", color: "red" }}>
+                    {this.state.passwordErr}
                 </div>
                 <div>
                     <input
@@ -58,9 +71,11 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
                         style={{ width: "80%"}}
                         type="password"
                         placeholder="password"
+                        required
                         onKeyUp={(e) => this._updatePassword((e as any).target.value)}
                     />
                 </div>
+                
                 <div>
                     <button
                         onClick={() => this._handleSubmit()}
@@ -81,23 +96,61 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
         }
     }
 
-    // Display errors or OK on screen
+    // Display errors case any
     private _renderValidationErrors() {
-        const validationResult = joi.validate({
-            email: this.state.email,
-            password: this.state.password
-        }, credentialSchema);
-        if (validationResult.error) {
-            return <div className="error-msg">
-                {validationResult.error.details.map((d, i) => <div key={i}>{d.message}</div>)}
-            </div>;
-        } else {
-            return <div className="success-msg">OK!</div>;
+        let nameErr = "";
+        let emailErr = "";
+        let passwordErr = "";
+        if(!this.state.name){
+            nameErr = "name cannot be blank";
         }
-    }
+        
+        if(!this.state.email.includes("@") || !this.state.email.includes(".")){
+            emailErr = "invalid email";
+        }
+
+        if(this.state.password.length < 3){
+            passwordErr = "password must have a minimum of 3 characters";
+        }
+
+        // if(emailErr || passwordErr){
+        //     this.setState({emailErr, passwordErr});
+        //     return false;
+        // }
+
+        if(!this.props.isLogin){
+            if(nameErr || emailErr || passwordErr){
+                this.setState({nameErr, emailErr, passwordErr});
+                return false;
+            }
+        }else {
+            if(emailErr || passwordErr){
+                this.setState({emailErr, passwordErr});
+                return false;
+            }
+        }
+
+        return true;
+        
+        
+        // const validationResult = joi.validate({
+        //     email: this.state.email,
+        //     password: this.state.password
+        // }, credentialSchema);
+        // if (validationResult.error) {
+        //     return <div className="error-msg">
+        //         {validationResult.error.details.map((d, i) => <div key={i}>{d.message}</div>)}
+        //     </div>;
+        // } else {
+        //     return <div className="success-msg">OK! </div>;
+        // }
+    };
 
     private _renderRegister(){
         return <div>
+            <div style={{ fontSize: 16, fontWeight: "bold", color: "red" }}>
+                {this.state.nameErr}
+            </div>
             <input
                 className="input-text"
                 style={{ width: "80%"}}
@@ -105,6 +158,7 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
                 placeholder="name"
                 onKeyUp={(e) => this._updateName((e as any).target.value)}
             />
+            
         </div>
         
     }
@@ -124,24 +178,30 @@ export class LoginOrRegisterInternal extends React.Component<LoginOrRegisterProp
     private _handleSubmit() {
         (async () => {
             try {
-                if (this.props.isLogin) {
-                    // Reset error
-                    this.setState({ error: null });
-                    //Call server
-                    const token = await getToken(this.state.email, this.state.password);
-                    // Save token in window object
-                    //(window as any).__token = token;
-                    setAuthToken(token);
-                    // Redirect to home page
-                    this.props.history.push("/");
-                } else {
-                    // Reset error
-                    this.setState({ error: null });
-                    // Call server
-                    await createUserAccount(this.state.name, this.state.email, this.state.password);
-                    // Redirect to sign in page
-                    this.props.history.push("/login")
+                const isValid = this._renderValidationErrors();
+                if(isValid){
+                    if (this.props.isLogin) {
+                        // Reset error
+                        // this.setState({ error: null });
+                        //Call server
+                        const token = await getToken(this.state.email, this.state.password);
+                        // Save token in window object
+                        //(window as any).__token = token;
+                        setAuthToken(token);
+                        // Redirect to home page
+                        this.props.history.push("/");
+                    } else {
+                        // Reset error
+                        this.setState({ error: null });
+                        // Call server
+                        await createUserAccount(this.state.name, this.state.email, this.state.password);
+                        // Redirect to sign in page
+                        this.props.history.push("/login")
+                    }
                 }
+
+                
+                
             } catch(err) {
                 this.setState({ error: err.error });
             }

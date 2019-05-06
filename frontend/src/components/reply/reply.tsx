@@ -4,7 +4,7 @@ import { getAuthToken } from '../with_auth/with_auth';
 import { ReplyDetailsInternal } from '../../pages/replyDetails';
 import { withRouter } from "react-router";
 
-export interface ReplyDetails {
+export interface ReplyPreviewDetails {
     id: number;
     userId: number;
     name: string;
@@ -14,11 +14,11 @@ export interface ReplyDetails {
     karmaCount: number | null;
 }
 
-interface ReplyProps extends ReplyDetails {
+interface ReplyProps extends ReplyPreviewDetails {
 }
 
 interface ReplyState {
-    reply: ReplyDetails | null;
+    reply: ReplyPreviewDetails | null;
 }
 
 export class Reply extends React.Component<ReplyProps, ReplyState> {
@@ -36,13 +36,15 @@ export class Reply extends React.Component<ReplyProps, ReplyState> {
                         <td className="left">
                             <div>
                                 <div>Karma</div>
-                                <button onClick={() => this._handleKarmaVote()}>
+                                <button className = "karma" 
+                                        onClick={() => this._handleKarmaVote(this.props.id)
+                                }>
                                     <img 
                                         src = {karma}
-                                        className = "karma"
                                         style = {{height: "30px", padding: "5px"}}
                                     />
                                 </button>
+                                <div>{this.props.karmaCount}</div>
                             </div>
                         </td>
                         <td className="right">
@@ -55,22 +57,21 @@ export class Reply extends React.Component<ReplyProps, ReplyState> {
         );
     }
 
-    private _handleKarmaVote(){
+    private _handleKarmaVote(id: number){
         (async () => {
             try {
                 const token = getAuthToken();
                 if(token){
-                    if(this.state.reply !== null){
+                    // if(this.state.reply !== null){
                         const karma = await karmaVote(
-                            this.state.reply.id,
+                            id,
                             token
                         );
-                    }
+                    // }
                 }
             } catch (err){
-
             }
-        })
+        })();
     }
 
     private renderTimeSinceDate(jsonDate: string) {
@@ -106,7 +107,8 @@ async function karmaVote(replyId: number, jwt: string) {
             headers: {
                 "Content-Type": "application/json",
                 "x-auth-token": jwt
-            }
+            },
+            body: JSON.stringify(update)
         }
     );
     const json = await response.json();
