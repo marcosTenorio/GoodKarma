@@ -49,7 +49,7 @@ export class Reply extends React.Component<ReplyProps, ReplyState> {
                         </td>
                         <td className="right">
                             <div className="audit">{this.renderTimeSinceDate(this.props.date)} ago by {this.props.name}</div>
-                            <h2 className="content">{this.props.text}</h2>
+                            <div className="content">{this.props.text}</div>
                         </td>
                     </tr>
                 </tbody>
