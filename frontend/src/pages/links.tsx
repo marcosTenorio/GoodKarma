@@ -96,7 +96,8 @@ export class Links extends React.Component<LinksProps, LinksState> {
         if (token) {
             return (
                 <React.Fragment>
-                    <div>
+                    <div className = "link-post">
+                    
                         <ul>
                         <input
                             type="text"
@@ -120,11 +121,12 @@ export class Links extends React.Component<LinksProps, LinksState> {
                             <option value="Business">Business</option>
                         </select>
                         <button 
-                            className = "btn right"
+                            className = "btn-post"
                             onClick={() => this._handleSubmit()}>
                             Post
                         </button>
                         </ul>
+                    
                     </div>
 
                 </React.Fragment>
