@@ -100,13 +100,15 @@ export class Links extends React.Component<LinksProps, LinksState> {
                     
                         <ul>
                         <input
+                            className = "input-title"
                             type="text"
                             placeholder="Title"
                             onKeyUp={(e) => this._updateTitle((e as any).target.value)}
                         />
                         <br />
                         <textarea
-                            className = "input-text"
+                            className = "input-text-post"
+                            type="text"
                             placeholder="write your question here.."
                             onKeyUp={(e) => this._updateQuestion((e as any).target.value)}
                         />
