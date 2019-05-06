@@ -11,12 +11,18 @@ code {
   font-family:'Nunito', sans-serif;
 }
 
+.audit {
+  font-style: italic;
+  font-weight: bold;
+  color:#0099cc;
+}
+
 .link-post{
   padding:5px;
   margin-right: 5px;
-  background-color:#0099cc;
+  background-color:#98daf0;
   border-radius: 15px;
-}
+} 
 
 
 .btns{
@@ -39,15 +45,19 @@ code {
 }
 
 .input-title {
-  line-height: 15px;
-  padding: 10px;
+  line-height: 10px;
+  padding: 5px;
   margin-bottom: 10px;
-  width: 95%;
+  width: 90%;
 
 }
 
 .input-text-post {
-  margin-left: 50%;
+  line-height: 15px;
+  padding: 15px;
+  margin-bottom: 10px;
+  width: 87%;
+  height: 59%;
 }
 
 .link-details {
@@ -154,6 +164,17 @@ a {
   border-radius: 15px;
   background-color:#0099cc;
 
+}
+
+.btn-reply {
+  position: relative;
+  padding: 5px;
+  width: 15%;
+  margin-right: 5px;
+  left: 20%;
+  font-size: 15px;
+  border-radius: 15px;
+  background-color:#0099cc;
 }
 
 .top-navbar a {

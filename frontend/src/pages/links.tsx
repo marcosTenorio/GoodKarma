@@ -108,7 +108,6 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         <br />
                         <textarea
                             className = "input-text-post"
-                            type="text"
                             placeholder="write your question here.."
                             onKeyUp={(e) => this._updateQuestion((e as any).target.value)}
                         />
@@ -130,6 +129,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         </ul>
                     
                     </div>
+                    <br></br>
 
                 </React.Fragment>
             )    
