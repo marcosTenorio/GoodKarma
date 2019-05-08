@@ -80,6 +80,7 @@ export function getHandlers(linkRepo: Repository<Link>) {
                             "link"."id",
                             "link"."userId",
                             "user"."email",
+                            "user"."name",
                             "link"."title",
                             "link"."question",
                             "link"."date",

@@ -1,12 +1,12 @@
 import * as React from "react"
-import { LinkDetails as LinkDetailsComponent, LinkPreviewDetails } from "../components/link_details/link_details";
+import { LinkDetails as LinkDetailsComponent } from "../components/link_details/link_details";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { Reply , ReplyPreviewDetails } from "../components/reply/reply";
 import { Listview } from "../components/listview/listview";
 import { getAuthToken } from "../components/with_auth/with_auth";
 
-interface LinkData {
+interface LinkPreviewDetails {
     id: number;
     userId: number;
     name: string;
@@ -23,7 +23,7 @@ interface LinkDetailsProps {
 }
 
 interface LinkDetailsState {
-    link: LinkData | null;
+    link: LinkPreviewDetails | null;
     newReplyContent: string
 }
 
@@ -121,7 +121,7 @@ export const LinkDetails = withRouter(props => <LinkDetailsInternal id ={props.m
 async function getData(id: string) {
     const response = await fetch(`/links/${id}`);
     const json = await response.json();
-    return json as LinkData;
+    return json as LinkPreviewDetails;
 }
 
 async function createReply(linkId: number, text: string, jwt: string) {

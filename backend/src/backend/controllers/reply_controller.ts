@@ -111,16 +111,6 @@ export function getHandlers(replyRepo: Repository<Reply>, karmaRepo: Repository<
         })();
     }
 
-
-
-
-
-
-
-
-
-
-
     // Create a new reply
     const createReply = (req: express.Request, res: express.Response) => {
         (async () => {

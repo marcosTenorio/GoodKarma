@@ -66,7 +66,12 @@ export class Links extends React.Component<LinksProps, LinksState> {
             return <div>Loading...</div>;
         } else {
             const filteredLinks = this.state.link.filter((link) => {
-                return link.title.indexOf(this.state.query) !== -1;
+                if(link.title.indexOf(this.state.query) !== -1){
+                    return link.title.indexOf(this.state.query) !== -1;
+                }else if (link.field.indexOf(this.state.query) !== -1){
+                    return link.field.indexOf(this.state.query) !== -1;
+                }
+                
             });
             return <div className = "details">
                 <input
@@ -112,7 +117,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                             onKeyUp={(e) => this._updateQuestion((e as any).target.value)}
                         />
                         <br />
-                        <label>Field: </label>
+                        <label>Course Field: </label>
                         <select
                             defaultValue={'DEFAULT'}
                             onChange={e => this.setState({ field: e.target.value })}
