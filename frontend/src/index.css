@@ -158,11 +158,12 @@ a {
   position: relative;
   padding:5px;
   width: 15%;
-  margin-right: 5px;
-  left: 40%;
+  /* margin-right: 5px; */
+  left: 20%;
   font-size: 15px;
   border-radius: 15px;
   background-color:#0099cc;
+
 
 }
 

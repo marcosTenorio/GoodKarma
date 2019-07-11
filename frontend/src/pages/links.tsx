@@ -1,10 +1,12 @@
 import * as React from "react";
 import { Listview } from "../components/listview/listview";
 import { Link } from "react-router-dom";
+import * as H from 'history';
 import { LinkDetails, LinkPreviewDetails } from "../components/link_details/link_details";
 import { getAuthToken } from "../components/with_auth/with_auth";
 
 interface LinksProps {
+    history: H.History;
     id: string;
 }
 
@@ -76,7 +78,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
             return <div className = "details">
                 <input
                     className="input-text"
-                    placeholder="Search"
+                    placeholder="Search by title or course field.."
                     type="text"
                     onKeyUp={(e) => this._onSearch(e.currentTarget.value)}
                 />
